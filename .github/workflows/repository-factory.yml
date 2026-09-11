@@ -1,0 +1,46 @@
+name: Repository Factory
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'repositories/**'
+
+jobs:
+  create-repositories:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create repositories
+        env:
+          GH_TOKEN: ${{ secrets.REPO_FACTORY_TOKEN }}
+        run: |
+          for file in repositories/*.yml; do
+
+            echo "Processing $file"
+
+            name=$(yq '.name' "$file")
+            description=$(yq '.description' "$file")
+            private=$(yq '.private' "$file")
+
+            echo "Repository: $name"
+            echo "Description: $description"
+            echo "Private: $private"
+
+            if gh repo view "swrightcissp/$name" >/dev/null 2>&1; then
+              echo "Repository $name already exists"
+              continue
+            fi
+
+            gh repo create "swrightcissp/$name" \
+              --description "$description" \
+              --public
+
+            echo "Created $name"
+
+          done
