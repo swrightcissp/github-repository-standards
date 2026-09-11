@@ -1,0 +1,11 @@
+name: SWREPO
+
+description: SWREPO created through the repository factory
+
+private: false
+
+template: github-repository-standards
+
+topics:
+  - standard
+  - test
