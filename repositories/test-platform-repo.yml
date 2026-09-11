@@ -1,0 +1,12 @@
+name: test-platform-repo
+
+description: Test repository created by the GitHub repository factory
+
+private: false
+
+template: github-repository-standards
+
+topics:
+  - standard
+  - platform
+  - test
